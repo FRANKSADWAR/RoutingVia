@@ -10,11 +10,12 @@ def home_page(request):
     return render(request,'index.html')
 
 
-db = 'test_route'
-passwd = 'RootRender90'
-user =' postgres'
+database = 'searouting'
+user ='postgres'
+password = 'RootRender90'
 
-conn = psycopg2.connect(database=db,user=user,password=passwd)
+
+conn = psycopg2.connect(database=database,user=user,password=password)
 
 
 ## ---- URL VIEW TO GET THE NEAREST POINT, IT'LL BE USED AS AN AJAX REQUEST
