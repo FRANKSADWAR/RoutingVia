@@ -83,7 +83,7 @@ function getNearestNode(){
  * routes and add it to the map
  */
 function getShortestPaths(){
-    
+
 }
 
 
@@ -94,3 +94,7 @@ function getShortestPaths(){
 function getShortest(){
 
 }
+
+
+// ** we will have a delete button using a leaflet div element, clicking the div will clear all the arrays and delete route from map
+
