@@ -1,6 +1,9 @@
 from django.urls import include,path
 from multiroutes import views
+from django.urls import path,register_converter
+from multiroutes import converters
 
+register_converter(converters.FloatUrlParameterConverter,'float')
 
 urlpatterns =[
     path('',views.home_page,name='home'),
