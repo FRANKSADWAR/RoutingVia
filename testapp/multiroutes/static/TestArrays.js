@@ -62,7 +62,6 @@ function zoomToFeature(e) {
 }
 
 
-
 function onEachFeature(feature,layer){
     layer.on({
         mouseover: highlightPath,
@@ -70,3 +69,28 @@ function onEachFeature(feature,layer){
     });
 }
 
+// clicking on the map will add a marker to the map
+mapObj.map.on('click',)
+
+// get the function to get the nearest node of each marker
+function getNearestNode(){
+
+}
+
+/**
+ * We have three arrays so far: 1 for the latlngs, 1 for the id's and one for the pairs
+ * Changing a single point should update all of them and then the pairs will be used by the shortest route function to compute the
+ * routes and add it to the map
+ */
+function getShortestPaths(){
+    
+}
+
+
+/**
+ * The shortest route function will first check for the length of the id's array, or the length of the first element of the pairs 
+ * array; if its > 1, then a route will be computed, otherwise; no route wil be computed
+ */
+function getShortest(){
+
+}
