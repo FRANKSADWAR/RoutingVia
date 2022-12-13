@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 from geojson import loads, Feature, FeatureCollection
 
 
+def home_page(request):
+    return render(request,'index.html')
+
+
 db = 'test_route'
 passwd = 'RootRender90'
 user =' postgres'
