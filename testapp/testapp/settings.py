@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'testapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'test_route',
+        'NAME': 'searouting',
         'USER':'postgres',
         'PASSWORD':'RootRender90',
         'HOST':'localhost',

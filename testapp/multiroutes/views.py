@@ -25,7 +25,7 @@ def get_nearest_vertex(request,lng,lat):
     """
 
     query = """
-            SELECT id, ST_AsGeoJSON(the_geom) AS geom FROM searoutes_vertices_pgr ORDER BY 
+            SELECT id, ST_AsGeoJSON(the_geom) AS geom FROM searoutes_noded_noded_vertices_pgr ORDER BY 
             the_geom <-> ST_SetSRID(ST_MakePoint(%s, %s),4326) LIMIT 1;
             """
     cur = conn.cursor()
@@ -57,7 +57,7 @@ def shortest_path(source,target):
     query_ = " WITH route_dij AS (SELECT sea.id AS id, SUM(sea.length) AS length, "
     query_ +=  "SUM (dij.cost) AS cost, ST_Collect(sea.geom) AS geom "
     query_ +=  "FROM pgr_astar('SELECT id,source,target,cost,x1,y1,x2,y2,reverse_cost "
-    query_ += "FROM searoutes',%s,%s) AS dij, "
+    query_ += "FROM searoutes_noded_noded',%s,%s) AS dij, "
     query_ += " searoutes AS sea WHERE dij.edge = sea.id GROUP BY sea.id) SELECT route_dij.id,"
     query_ +=  " route_dij.cost, ST_AsGeoJSON(route_dij.geom) AS the_geom, "          
     query_ += "route_dij.length,(SELECT SUM(ST_Length( (ST_Intersection(route.geom,eca.geom))::geography)/1852)"        
