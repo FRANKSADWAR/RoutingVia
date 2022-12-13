@@ -41,9 +41,6 @@ def get_nearest_vertex(request,lng,lat):
     vertex_data = FeatureCollection(vertex_result, totalFeatures = totalFeatures)
     return JsonResponse(vertex_data)
 
-
-
-
 def shortest_path(source,target):
     """
     This custom query is in charge of computing the shortest path bewteen two points at sea,
@@ -66,8 +63,6 @@ def shortest_path(source,target):
         cursor.execute(query_,(source,target))
         rows = cursor.fetchall()
     return rows 
-
-
 
 
 def get_shortest_path(request,source,target):
@@ -128,8 +123,6 @@ def shortest_path_obstacles(source,target):
         cursor.execute(query,(source,target))
         rows = cursor.fetchall()
     return rows  
-
-
 
 
 def get_shortest_path_obstacles(request,source,target):
