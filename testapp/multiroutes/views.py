@@ -69,6 +69,7 @@ def shortest_path(source,target):
 
 
 
+
 def get_shortest_path(request,source,target):
 
     datasets = shortest_path(source,target)
@@ -107,3 +108,66 @@ def get_shortest_path(request,source,target):
     route_data = FeatureCollection(route_geometry,distance=total_length,cost=total_cost,eca_distance=eca_distance)
     return JsonResponse(route_data)
      
+
+def shortest_path_obstacles(source,target):
+    """
+    This query returns the shortest path between points while avoiding the High Risk Areas, the query returned also
+    contains the ECA distance if the area crosses an ECA distance or null otherwise.
+    """
+    
+    query = " WITH route_dij AS (SELECT obst.gid AS id, SUM(obst.length) AS length, "
+    query +=  "SUM (dij.cost) AS cost, ST_Collect(obst.geom) AS geom "
+    query +=  "FROM pgr_astar('SELECT gid AS id, source, target, cost, x1, y1, x2, y2, reverse_cost "
+    query += " FROM obstacles_route', %s,%s) AS dij, "
+    query += " obstacles_route AS obst WHERE dij.edge = obst.gid GROUP BY obst.gid) SELECT route_dij.id,"
+    query +=  " route_dij.cost, ST_AsGeoJSON(route_dij.geom) AS the_geom, "          
+    query += "route_dij.length,(SELECT SUM(ST_Length((ST_Intersection(route.geom,eca.geom))::geography)/1852)"        
+    query += " FROM eca_areas AS eca, route_dij AS route WHERE ST_Intersects(route.geom,eca.geom)) AS eca_distance FROM route_dij"
+
+    with conn.cursor() as cursor:
+        cursor.execute(query,(source,target))
+        rows = cursor.fetchall()
+    return rows  
+
+
+
+
+def get_shortest_path_obstacles(request,source,target):
+
+    raw_datasets = shortest_path_obstacles(source,target)
+
+    total_length = []
+    total_cost = []
+    route_geometry = []
+    eca_value = 0
+
+    try:
+        eca_distance = []
+        for dataset in raw_datasets:
+            id_feature = dataset[0]
+            cost = dataset[1]
+            length = dataset[3]
+            eca_value = dataset[-1]
+
+            total_length.append(length)
+            total_cost.append(cost)
+
+            route_geom = dataset[2]
+            route_json = loads(route_geom)
+            data_geom = Feature(geometry=route_json,properties={"id":id_feature,"cost":cost,"length":length})
+            route_geometry.append(data_geom)
+
+        total_length = round(sum(total_length),4)
+        total_cost = round(sum(total_cost),4)
+
+        eca_distance.append(eca_value)  
+
+        if (isinstance(eca_distance[0],float)):
+            eca_distance = round(sum(eca_distance),4)
+        else:    
+            eca_distance = 0
+
+        route_info = FeatureCollection(route_geometry,distance=total_length,cost=total_cost,eca_distance=eca_distance)
+        return JsonResponse(route_info)
+    except:
+        return 0
