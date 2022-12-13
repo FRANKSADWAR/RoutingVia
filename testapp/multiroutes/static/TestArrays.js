@@ -69,8 +69,24 @@ function onEachFeature(feature,layer){
     });
 }
 
+var latLngArray = [];
+var nodeIdArrays = [];
+var pairsArray = [];
+
 // clicking on the map will add a marker to the map
-mapObj.map.on('click',)
+mapObj.map.on('click',(e)=>{
+    //new L.Marker([e.latlng]).addTo(mapObj.map);
+    var latlngs = e.getLatLng();
+    latLngArray.push(latlngs);
+    new L.Marker([latlngs.lat,latlngs.lng]).addTo(mapObj.map);
+
+    // we also want to get the ids of these markers and add them to another array
+
+});
+console.log(latLngArray);
+
+
+
 
 // get the function to get the nearest node of each marker
 function getNearestNode(){
