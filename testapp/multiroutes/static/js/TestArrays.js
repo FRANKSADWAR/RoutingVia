@@ -23,6 +23,7 @@ updateArrays();
  */
 
 var mapObj = new MapObject('map',[6.225098,64.76543],32,5);
+mapObj.initialize();
 mapObj.addDrawingTools();
 
 // A utility function to add the GeoJSON data into the layers and add them to the map
@@ -69,21 +70,26 @@ function onEachFeature(feature,layer){
     });
 }
 
-var latLngArray = [];
+var latLngArray = new Array();
 var nodeIdArrays = [];
 var pairsArray = [];
 
 // clicking on the map will add a marker to the map
-mapObj.map.on('click',(e)=>{
-    //new L.Marker([e.latlng]).addTo(mapObj.map);
-    var latlngs = e.getLatLng();
+mapObj.map.on('click',function(e){
+    
+    var latlngs = e.latlng;
+    console.log(latlngs);
     latLngArray.push(latlngs);
-    new L.Marker([latlngs.lat,latlngs.lng]).addTo(mapObj.map);
+    var newMarker = new L.Marker([latlngs.lat,latlngs.lng],{
+        draggable: true
+    }).addTo(mapObj.map);
+    //latLngArray.push(newMarker);
+    console.log(latLngArray);
 
     // we also want to get the ids of these markers and add them to another array
 
 });
-console.log(latLngArray);
+
 
 
 
