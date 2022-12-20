@@ -127,7 +127,14 @@ let point = L.latlng(51.5,-0.09);
 // Find the closest point on the polygon to the given point
 let closestPoint = polygon.closestLayerPoint(point);
 
-
+// You can then use the closestPoint object to get the latitude and longitude of the closest point
 let lat = closestPoint.lat;
 let lng = closestPoint.lng;
 
+// or you can use the closesPoint object to create a new LatLng object
+let closestLatLng = L.latLng(closestPoint.lat,closestPoint.lng);
+
+/**
+ * closestLayerPoint method returns a Point object having x and y pixel coordinates, to 
+ * convert them, use the map.layerPointToLatLng to vonvert to a LatLng object.
+ */
