@@ -120,3 +120,14 @@ function getShortest(){
 
 // ** we will have a delete button using a leaflet div element, clicking the div will clear all the arrays and delete route from map
 
+
+// create a latlng object for the point you want to find the closest point on the polygon for
+let point = L.latlng(51.5,-0.09);
+
+// Find the closest point on the polygon to the given point
+let closestPoint = polygon.closestLayerPoint(point);
+
+
+let lat = closestPoint.lat;
+let lng = closestPoint.lng;
+
